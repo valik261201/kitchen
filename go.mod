@@ -1,3 +1,5 @@
-package main
+module home/valik/Documents/kitchen
 
-go 1.17
+go 1.19
+
+require github.com/gorilla/mux v1.8.0

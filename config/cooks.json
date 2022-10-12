@@ -1,0 +1,10 @@
+{
+    "cooks": [
+        {
+            "rank": 3,
+            "proficiency": 4,
+            "name": "Gordon Ramsay",
+            "catch-phrase": "Hey, panini head, are you listening to me?"
+        }
+    ] 
+}
