@@ -6,10 +6,13 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/gorilla/mux"
 )
+
+var mut sync.Mutex
 
 func PrettyStruct(data interface{}) (string, error) {
 	val, err := json.MarshalIndent(data, "", "    ")
@@ -47,21 +50,21 @@ func performPostRequest(order Order) {
 
 		// return the first order form the queue
 		order := orderList.Dequeue()
-
+		mut.Lock()
 		var requestBody, _ = json.Marshal(order)
 
 		fmt.Println("\nOrder with id ", order.Id, " is being cooked.")
-		time.Sleep(time.Second * 3)
+		time.Sleep(time.Second + 3)
 
 		fmt.Printf("\nOrder %v was sent to the dining-hall\n", string(requestBody))
 		response, err := http.Post(myUrl, "application/json", bytes.NewBuffer(requestBody))
-
+		mut.Unlock()
 		if err != nil {
 			panic(err)
 		}
 		defer response.Body.Close()
 
-		time.Sleep(time.Second * 1)
+		time.Sleep(time.Second + 1)
 	}
 }
 
