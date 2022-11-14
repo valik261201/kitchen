@@ -28,7 +28,7 @@ func postOrder(w http.ResponseWriter, r *http.Request) {
 	var order Order
 
 	_ = json.NewDecoder(r.Body).Decode(&order)
-
+	mut.Lock()
 	// add orders to the end of the queue
 	orderList.Enqueue(order)
 
@@ -42,6 +42,7 @@ func postOrder(w http.ResponseWriter, r *http.Request) {
 	fmt.Print("\nKitchen recieved order:\n", ord)
 
 	go performPostRequest(order)
+	mut.Unlock()
 }
 
 func performPostRequest(order Order) {
